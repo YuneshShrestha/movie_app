@@ -41,38 +41,11 @@ class NowPlaying extends StatelessWidget {
                       SizedBox(
                         width: 150.0,
                         height: 200.0,
-                        child: Stack(
-                          children: [
-                            Image.network(
-                              "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                            Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4.0),
-                                    decoration: const BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8.0))),
-                                    child: Column(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.black,
-                                          size: 20.0,
-                                        ),
-                                        Text("${data[index].voteAverage}",
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16.0)),
-                                      ],
-                                    ))),
-                          ],
+                        child: Image.network(
+                          "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
                       ),
                       const SizedBox(
