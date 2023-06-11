@@ -6,12 +6,15 @@ import 'package:flutter/foundation.dart';
 import 'package:movie_recommendation_app/model/other_movie_model.dart';
 
 class ApiProvider {
+  // Create Dio instance
   final Dio _dio = Dio();
+  // Base url
   final String _url = "https://api.themoviedb.org/3/movie/";
   String getUrl(String path) {
     return "$_url$path";
   }
 
+  // Headers for authorization
   final _headers = {
     "Accept": "application/json",
     "Authorization":
@@ -20,14 +23,17 @@ class ApiProvider {
 
   Future<NowAndUpcomingMovieModel> getNowPlayingMovies() async {
     try {
+      // Get response from api
       Response response = await _dio.get(
         getUrl('now_playing'),
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return NowAndUpcomingMovieModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return NowAndUpcomingMovieModel();
     }
@@ -35,14 +41,17 @@ class ApiProvider {
 
   Future<NowAndUpcomingMovieModel> getUpcomingMovies() async {
     try {
+      // Get response from api
       Response response = await _dio.get(
         getUrl('upcoming'),
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return NowAndUpcomingMovieModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return NowAndUpcomingMovieModel();
     }
@@ -50,14 +59,17 @@ class ApiProvider {
 
   Future<OtherMovieModel> getPopularMovies() async {
     try {
+      // Get response from api
       Response response = await _dio.get(
         getUrl('popular'),
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return OtherMovieModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return OtherMovieModel();
     }
@@ -65,14 +77,17 @@ class ApiProvider {
 
   Future<OtherMovieModel> getTopRatedMovies() async {
     try {
+      // Get response from api
       Response response = await _dio.get(
         getUrl('top_rated'),
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return OtherMovieModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return OtherMovieModel();
     }
@@ -80,14 +95,17 @@ class ApiProvider {
 
   Future<GenreModel> getGenre() async {
     try {
+      // Get response from api
       Response response = await _dio.get(
         'https://api.themoviedb.org/3/genre/movie/list',
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return GenreModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return GenreModel();
     }
@@ -95,14 +113,18 @@ class ApiProvider {
 
   Future<MovieDetailModel> getMovieDetail({required String id}) async {
     try {
+      // Get response from api
+
       Response response = await _dio.get(
         getUrl(id),
         options: Options(
           headers: _headers,
         ),
       );
+      // Convert response to model
       return MovieDetailModel.fromJson(response.data);
     } catch (e, stacktrace) {
+      // If error occured, return empty model
       if (kDebugMode) print("Exception occured: $e stackTrace: $stacktrace");
       return MovieDetailModel();
     }

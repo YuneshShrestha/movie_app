@@ -17,12 +17,14 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   @override
   void initState() {
     super.initState();
+  // Fetch movie data when this page is loaded using the id 
     _movieBloc = MovieDetailBloc(id: widget.id);
     _movieBloc.add(GetMovieDetailList());
   }
 
   @override
   void dispose() {
+    // Close the bloc when this page is disposed
     _movieBloc.close();
     super.dispose();
   }
@@ -37,10 +39,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   Widget _buildMovieDetailList() {
+    // BlocProvider is used to provide the bloc to its children
     return BlocProvider(
       create: (_) => _movieBloc,
+      // BlocListener is used to listen to the state changes in the bloc
       child: BlocListener<MovieDetailBloc, MovieDetailState>(
         listener: (context, state) {
+          // Show snackbar when the state is MovieError
           if (state is MovieDetailError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -49,18 +54,24 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             );
           }
         },
+        // BlocBuilder is used to rebuild the UI based on the state in the bloc
         child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state) {
             if (state is MovieDetailInitial) {
+            // Show loading indicator when the app is first loaded
+
               return _buildLoading();
             } else if (state is MovieDetailLoading) {
+              // Show loading indicator when the data is being fetched
               return _buildLoading();
             } else if (state is MovieDetailLoaded) {
+              // Show the movie list when the data is loaded
               return _buildColumnWithData(
                 context,
                 state.movieDetail,
               );
             } else if (state is MovieDetailError) {
+              // Show error message when the data is not loaded
               return const Center(
                 child: Text("Error"),
               );
@@ -83,6 +94,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     const spacer = SizedBox(
       height: 15,
     );
+    // Check if the data is null or not
+    // If the data is null, show error message
+    // If the data is not null, show the data
     return (movieDetail.backdropPath == null ||
             movieDetail.originalTitle == null ||
             movieDetail.overview == null ||
@@ -124,10 +138,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         SizedBox(
                           height: 250,
                           width: MediaQuery.of(context).size.width,
-                          child: Image.network(
-                            'https://image.tmdb.org/t/p/w500/${movieDetail.backdropPath}',
-                            fit: BoxFit.fill,
-                            // color: Colors.black.withOpacity(0.5),
+                          child: FadeInImage(
+                            fit: BoxFit.cover,
+                            placeholder: const AssetImage(
+                                'assets/images/place_holder_image.png'),
+                            image: NetworkImage(
+                              'https://image.tmdb.org/t/p/w500${movieDetail.backdropPath}',
+                            ),
                           ),
                         ),
                         Container(

@@ -13,9 +13,10 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     final ApiRepository apiRepository = ApiRepository();
 
     on<GetMovieList>((event, emit) async {
-      emit(MovieLoading());
       try {
+        // Emit MovieLoading() state to show loading indicator
         emit(MovieLoading());
+        // Getting data from API
         final nowPlayingMovies = await apiRepository.getNowPlayingMovies();
         final upcomingMovies = await apiRepository.getUpcomingMovies();
 
@@ -23,6 +24,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         final popularMovies = await apiRepository.getPopularMovies();
         final genre = await apiRepository.getGenre();
 
+        // Emit MovieLoaded() state to show data after getting data from API
         emit(
           MovieLoaded(
             nowPlayingMovies: nowPlayingMovies,
@@ -33,8 +35,10 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           ),
         );
       } on NetworkError {
+        // Emit MovieError() state to show error message
         emit(const MovieError('Failed to fetch data. Is your device online?'));
       } catch (e) {
+        // Emit MovieError() state to show error message
         emit(MovieError(e.toString()));
       }
     });

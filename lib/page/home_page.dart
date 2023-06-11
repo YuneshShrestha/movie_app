@@ -22,11 +22,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    // Fetch movie data when this page is loaded
     _movieBloc.add(GetMovieList());
   }
 
   @override
   void dispose() {
+    // Close the bloc when this page is disposed
     _movieBloc.close();
     super.dispose();
   }
@@ -43,8 +45,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieList() {
+    // BlocProvider is used to provide the bloc to its children
     return BlocProvider(
       create: (_) => _movieBloc,
+      // BlocListener is used to listen to the state changes in the bloc
       child: BlocListener<MovieBloc, MovieState>(
         listener: (context, state) {
           if (state is MovieError) {
@@ -55,13 +59,17 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
+        // BlocBuilder is used to build UI based on the state of the bloc
         child: BlocBuilder<MovieBloc, MovieState>(
           builder: (context, state) {
             if (state is MovieInitial) {
+              // Show loading indicator when the app is first loaded
               return _buildLoading();
             } else if (state is MovieLoading) {
+              // Show loading indicator when the data is being fetched
               return _buildLoading();
             } else if (state is MovieLoaded) {
+              // Show the movie list when the data is loaded
               return Padding(
                 padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
                 child: _buildColumnWithData(
@@ -74,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else if (state is MovieError) {
+              // Show error message when the data fetching fails
               return const Center(
                 child: Text("Error"),
               );
@@ -101,6 +110,8 @@ class _HomePageState extends State<HomePage> {
     const spacer = SizedBox(
       height: 15,
     );
+    // Show error message when the data fetching fails
+    // else show the movie list
     return (nowPlayingMovies.results == null ||
             upcomingMovies.results == null ||
             popularMovies.results == null ||

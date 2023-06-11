@@ -1,3 +1,4 @@
+// GenreModel model class to store the genre data from the API.
 class GenreModel {
   List<Genres>? genres;
 
@@ -33,7 +34,7 @@ class Genres {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     return data;

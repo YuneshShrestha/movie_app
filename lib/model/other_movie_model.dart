@@ -1,3 +1,5 @@
+// OtherMovieModel is a model class that will be used to represent the
+// data from the API other than now and upcoming movies.
 class OtherMovieModel {
   int? page;
   List<Results>? results;
@@ -7,6 +9,7 @@ class OtherMovieModel {
   OtherMovieModel(
       {this.page, this.results, this.totalPages, this.totalResults});
 
+  // OtherMovieModel.fromJson is a factory constructor that will be used to convert the JSON data to the OtherMovieModel.
   OtherMovieModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
@@ -18,7 +21,7 @@ class OtherMovieModel {
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
   }
-
+// toJson() is a method that will be used to convert the OtherMovieModel to JSON data.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['page'] = page;
@@ -31,6 +34,7 @@ class OtherMovieModel {
   }
 }
 
+// Results is a model class that will be used to represent the results data from the API.
 class Results {
   bool? adult;
   String? backdropPath;

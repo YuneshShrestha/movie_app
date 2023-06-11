@@ -1,3 +1,5 @@
+// MovieDetailModel is a model class that will be used to represent the movie detail
+//data from the API.
 class MovieDetailModel {
   bool? adult;
   String? backdropPath;
@@ -52,6 +54,7 @@ class MovieDetailModel {
       this.voteAverage,
       this.voteCount});
 
+// MovieDetailModel.fromJson() is a factory constructor that will be used to convert the JSON data to the MovieDetailModel.
   MovieDetailModel.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
@@ -102,6 +105,7 @@ class MovieDetailModel {
     voteCount = json['vote_count'];
   }
 
+// MovieDetailModel.toJson() is a method that will be used to convert the MovieDetailModel to JSON data.
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['adult'] = adult;
@@ -146,6 +150,7 @@ class MovieDetailModel {
   }
 }
 
+// The following classes are used to convert the JSON data to Dart objects.
 class BelongsToCollection {
   int? id;
   String? name;

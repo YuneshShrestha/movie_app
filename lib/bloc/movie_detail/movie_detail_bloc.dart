@@ -8,25 +8,26 @@ part 'movie_detail_state.dart';
 
 class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
   final String id;
-  MovieDetailBloc({required this.id}) : super(const MovieDetailState()) {
+  MovieDetailBloc({required this.id}) : super(MovieDetailInitial()) {
     final ApiRepository apiRepository = ApiRepository();
     on<GetMovieDetailList>((event, emit) async {
-      emit(MovieDetailLoading());
       try {
+        // Emit MovieDetailLoading() state to show loading indicator
         emit(MovieDetailLoading());
+        // Getting data from API
         final movieDetail = await apiRepository.getMovieDetail(id);
-
-
+        // Emit MovieDetailLoaded() state to show data after getting data from API
         emit(
           MovieDetailLoaded(
             movieDetail: movieDetail,
-            
           ),
         );
       } on NetworkError {
+        // Emit MovieDetailError() state to show error message
         emit(const MovieDetailError(
             'Failed to fetch data. Is your device online?'));
       } catch (e) {
+        // Emit MovieDetailError() state to show error message
         emit(MovieDetailError(e.toString()));
       }
     });

@@ -13,12 +13,9 @@ class MyApp extends StatelessWidget {
       title: 'Movie App',
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
-      initialRoute: '/',
-      // home: const HomePage(),
+     
+      // initialRoute: '/',
+      
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
           "/": (ctx) => const HomePage(),

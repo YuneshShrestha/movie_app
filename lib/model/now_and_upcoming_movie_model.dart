@@ -1,3 +1,5 @@
+// NowAndUpcomingMovieModel is a model class that will be used to represent the
+// data from the API of now and upcoming movies.
 class NowAndUpcomingMovieModel {
   Dates? dates;
   int? page;
@@ -12,6 +14,7 @@ class NowAndUpcomingMovieModel {
       this.totalPages,
       this.totalResults});
 
+//  NowAndUpcomingMovieModel.fromJson is a factory constructor that will be used to convert the JSON data to the NowAndUpcomingMovieModel.
   NowAndUpcomingMovieModel.fromJson(Map<String, dynamic> json) {
     dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null;
     page = json['page'];
@@ -25,8 +28,9 @@ class NowAndUpcomingMovieModel {
     totalResults = json['total_results'];
   }
 
+//  NowAndUpcomingMovieModel.toJson() is a method that will be used to convert the NowAndUpcomingMovieModel to JSON data.
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (dates != null) {
       data['dates'] = dates!.toJson();
     }
@@ -39,6 +43,7 @@ class NowAndUpcomingMovieModel {
     return data;
   }
 }
+// Dates is a model class that will be used to represent the dates data from the API.
 
 class Dates {
   String? maximum;
@@ -59,6 +64,7 @@ class Dates {
   }
 }
 
+// Results is a model class that will be used to represent the results data from the API.
 class Results {
   bool? adult;
   String? backdropPath;
