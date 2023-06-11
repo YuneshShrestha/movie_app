@@ -23,34 +23,41 @@ class NowPlaying extends StatelessWidget {
           },
           itemBuilder: (context, index) {
             final data = nowPlayingMovies.results!;
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: SizedBox(
-                width: 150.0,
-                height: 250.0,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 150.0,
-                      height: 200.0,
-                      child: Image.network(
-                        "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+            return InkWell(
+               onTap: () {
+                Navigator.pushNamed(
+                    context,
+                    '/movie-detail', arguments: data[index].id.toString(),);
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: SizedBox(
+                  width: 150.0,
+                  height: 250.0,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 150.0,
+                        height: 200.0,
+                        child: Image.network(
+                          "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4.0,
-                    ),
-                    Expanded(
-                        child: Text(data[index].title.toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                            ))),
-                  ],
+                      const SizedBox(
+                        height: 4.0,
+                      ),
+                      Expanded(
+                          child: Text(data[index].title.toString(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12.0,
+                              ))),
+                    ],
+                  ),
                 ),
               ),
             );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_recommendation_app/model/now_and_upcoming_movie_model.dart';
-import 'package:movie_recommendation_app/page/movie_detail_page.dart';
+
 
 class UpComingMovies extends StatelessWidget {
   const UpComingMovies({
@@ -11,7 +11,7 @@ class UpComingMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 300,
       child: ListView.separated(
           itemCount: upcomingMovies.results!.length,
@@ -26,11 +26,9 @@ class UpComingMovies extends StatelessWidget {
             final data = upcomingMovies.results!;
             return InkWell(
               onTap: () {
-                Navigator.push(
+                Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                        builder: (ctx) =>
-                            MovieDetailPage(id: data[index].id.toString())));
+                    '/movie-detail', arguments: data[index].id.toString(),);
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),

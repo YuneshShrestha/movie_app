@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _movieBloc.add(GetMovieList());
   }
+
   @override
   void dispose() {
     _movieBloc.close();
@@ -42,47 +43,43 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildMovieList() {
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      child: BlocProvider(
-        create: (_) => _movieBloc,
-        child: BlocListener<MovieBloc, MovieState>(
-          listener: (context, state) {
-            if (state is MovieError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message!),
+    return BlocProvider(
+      create: (_) => _movieBloc,
+      child: BlocListener<MovieBloc, MovieState>(
+        listener: (context, state) {
+          if (state is MovieError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message!),
+              ),
+            );
+          }
+        },
+        child: BlocBuilder<MovieBloc, MovieState>(
+          builder: (context, state) {
+            if (state is MovieInitial) {
+              return _buildLoading();
+            } else if (state is MovieLoading) {
+              return _buildLoading();
+            } else if (state is MovieLoaded) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+                child: _buildColumnWithData(
+                  context,
+                  state.nowPlayingMovies,
+                  state.upcomingMovies,
+                  state.popularMovies,
+                  state.topRatedMovies,
+                  state.genre,
                 ),
               );
+            } else if (state is MovieError) {
+              return const Center(
+                child: Text("Error"),
+              );
             }
+            return Container();
           },
-          child: BlocBuilder<MovieBloc, MovieState>(
-            builder: (context, state) {
-              if (state is MovieInitial) {
-                return _buildLoading();
-              } else if (state is MovieLoading) {
-                return _buildLoading();
-              } else if (state is MovieLoaded) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.only(left: 12, right: 12, bottom: 8),
-                  child: _buildColumnWithData(
-                    context,
-                    state.nowPlayingMovies,
-                    state.upcomingMovies,
-                    state.popularMovies,
-                    state.topRatedMovies,
-                    state.genre,
-                  ),
-                );
-              } else if (state is MovieError) {
-                return const Center(
-                  child: Text("Error"),
-                );
-              }
-              return Container();
-            },
-          ),
         ),
       ),
     );
@@ -104,38 +101,65 @@ class _HomePageState extends State<HomePage> {
     const spacer = SizedBox(
       height: 15,
     );
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // spacer,
-          const TextWidget(text: 'Upcoming Movies'),
-          spacer,
-          UpComingMovies(
-            upcomingMovies: upcomingMovies,
-          ),
-          spacer,
-          const TextWidget(text: 'Now Playing Movies'),
-          spacer,
-          NowPlaying(
-            nowPlayingMovies: nowPlayingMovies,
-          ),
-          spacer,
-          const TextWidget(text: 'Top Rated Movies'),
-          spacer,
-          TopRatedMovies(
-            topRatedMovies: topRatedMovies,
-          ),
-          spacer,
-          const TextWidget(text: 'Popular Movies'),
-          spacer,
-          PopularMovies(
-            popularMovies: popularMovies,
-            genre: genre,
-          ),
-        ],
-      ),
-    );
+    return (nowPlayingMovies.results == null ||
+            upcomingMovies.results == null ||
+            popularMovies.results == null ||
+            topRatedMovies.results == null ||
+            genre.genres == null)
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Something went wrong. Might be problem with api or your internet connection.",
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _movieBloc.add(GetMovieList());
+                  },
+                  child: const Text('Try Again'),
+                ),
+              ],
+            ),
+          )
+        : RefreshIndicator(
+            onRefresh: () async {
+              _movieBloc.add(GetMovieList());
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  spacer,
+                  const TextWidget(text: 'Upcoming Movies'),
+                  spacer,
+                  UpComingMovies(
+                    upcomingMovies: upcomingMovies,
+                  ),
+                  spacer,
+                  const TextWidget(text: 'Now Playing Movies'),
+                  spacer,
+                  NowPlaying(
+                    nowPlayingMovies: nowPlayingMovies,
+                  ),
+                  spacer,
+                  const TextWidget(text: 'Top Rated Movies'),
+                  spacer,
+                  TopRatedMovies(
+                    topRatedMovies: topRatedMovies,
+                  ),
+                  spacer,
+                  const TextWidget(text: 'Popular Movies'),
+                  spacer,
+                  PopularMovies(
+                    popularMovies: popularMovies,
+                    genre: genre,
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
 
