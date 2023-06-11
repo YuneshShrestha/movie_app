@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_recommendation_app/model/now_and_upcoming_movie_model.dart';
+import 'package:movie_recommendation_app/page/movie_detail_page.dart';
 
 class UpComingMovies extends StatelessWidget {
   const UpComingMovies({
@@ -23,44 +24,53 @@ class UpComingMovies extends StatelessWidget {
           },
           itemBuilder: (context, index) {
             final data = upcomingMovies.results!;
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: SizedBox(
-                width: 220.0,
-                height: 300.0,
-                child: Stack(
-                  children: [
-                    // Background Image
-                    Image.network(
-                      "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ctx) =>
+                            MovieDetailPage(id: data[index].id.toString())));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: SizedBox(
+                  width: 220.0,
+                  height: 300.0,
+                  child: Stack(
+                    children: [
+                      // Background Image
+                      Image.network(
+                        "https://image.tmdb.org/t/p/w500/${data[index].posterPath}",
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
 
-                    Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4.0),
-                            decoration: const BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(8.0))),
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  color: Colors.black,
-                                  size: 20.0,
-                                ),
-                                Text("${data[index].voteAverage}",
-                                    style: const TextStyle(
-                                        color: Colors.black, fontSize: 16.0)),
-                              ],
-                            ))),
-                  ],
+                      Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 4.0),
+                              decoration: const BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(8.0))),
+                              child: Column(
+                                children: [
+                                  const Icon(
+                                    Icons.star,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                  ),
+                                  Text("${data[index].voteAverage}",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 16.0)),
+                                ],
+                              ))),
+                    ],
+                  ),
                 ),
               ),
             );

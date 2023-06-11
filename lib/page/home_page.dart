@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_recommendation_app/bloc/movie_bloc.dart';
+import 'package:movie_recommendation_app/bloc/movie/movie_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_recommendation_app/model/genre_model.dart';
 import 'package:movie_recommendation_app/model/now_and_upcoming_movie_model.dart';
@@ -23,6 +23,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _movieBloc.add(GetMovieList());
+  }
+  @override
+  void dispose() {
+    _movieBloc.close();
+    super.dispose();
   }
 
   @override

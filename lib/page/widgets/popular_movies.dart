@@ -107,6 +107,7 @@ class PopularMovies extends StatelessWidget {
                                     ),
                                 ],
                               ),
+                            
                             ],
                           ),
                         ),

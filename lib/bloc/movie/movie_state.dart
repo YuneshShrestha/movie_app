@@ -18,7 +18,13 @@ class MovieLoaded extends MovieState {
   final OtherMovieModel topRatedMovies;
   final GenreModel genre;
 
-  const MovieLoaded({required this.nowPlayingMovies, required this.upcomingMovies, required this.popularMovies, required this.topRatedMovies,required this.genre,});
+  const MovieLoaded({
+    required this.nowPlayingMovies,
+    required this.upcomingMovies,
+    required this.popularMovies,
+    required this.topRatedMovies,
+    required this.genre,
+  });
 }
 
 class MovieError extends MovieState {
