@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_recommendation_app/bloc/movie_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_recommendation_app/model/now_and_upcoming_movie.dart';
+import 'package:movie_recommendation_app/model/genre_model.dart';
+import 'package:movie_recommendation_app/model/now_and_upcoming_movie_model.dart';
+import 'package:movie_recommendation_app/model/other_movie_model.dart';
+import 'package:movie_recommendation_app/page/widgets/now_playing_movies.dart';
+import 'package:movie_recommendation_app/page/widgets/popular_movies.dart';
+import 'package:movie_recommendation_app/page/widgets/top_rated_movies.dart';
+import 'package:movie_recommendation_app/page/widgets/upcoming_movies.dart';
 // import 'package:movie_recommendation_app/model/upcoming_movie_model.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,7 +29,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Movie Recommendation"),
+        title: const Text("Movie App"),
+        centerTitle: true,
       ),
       body: _buildMovieList(),
     );
@@ -51,8 +58,18 @@ class _HomePageState extends State<HomePage> {
               } else if (state is MovieLoading) {
                 return _buildLoading();
               } else if (state is MovieLoaded) {
-                return _buildColumnWithData(
-                    context, state.nowPlayingMovies, state.upcomingMovies);
+                return Padding(
+                  padding:
+                      const EdgeInsets.only(left: 12, right: 12, bottom: 8),
+                  child: _buildColumnWithData(
+                    context,
+                    state.nowPlayingMovies,
+                    state.upcomingMovies,
+                    state.popularMovies,
+                    state.topRatedMovies,
+                    state.genre,
+                  ),
+                );
               } else if (state is MovieError) {
                 return const Center(
                   child: Text("Error"),
@@ -75,11 +92,64 @@ class _HomePageState extends State<HomePage> {
   Widget _buildColumnWithData(
       BuildContext context,
       NowAndUpcomingMovieModel nowPlayingMovies,
-      NowAndUpcomingMovieModel upcomingMovies) {
-    return Column(
-      children: nowPlayingMovies.results == null
-          ? []
-          : nowPlayingMovies.results!.map((e) => Text(e.title ?? "")).toList(),
+      NowAndUpcomingMovieModel upcomingMovies,
+      OtherMovieModel popularMovies,
+      OtherMovieModel topRatedMovies,
+      GenreModel genre) {
+    const spacer = SizedBox(
+      height: 15,
+    );
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // spacer,
+          const TextWidget(text: 'Upcoming Movies'),
+          spacer,
+          UpComingMovies(
+            upcomingMovies: upcomingMovies,
+          ),
+          spacer,
+          const TextWidget(text: 'Now Playing Movies'),
+          spacer,
+          NowPlaying(
+            nowPlayingMovies: nowPlayingMovies,
+          ),
+          spacer,
+          const TextWidget(text: 'Top Rated Movies'),
+          spacer,
+          TopRatedMovies(
+            topRatedMovies: topRatedMovies,
+          ),
+          spacer,
+          const TextWidget(text: 'Popular Movies'),
+          spacer,
+          PopularMovies(
+            popularMovies: popularMovies,
+            genre: genre,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TextWidget extends StatelessWidget {
+  const TextWidget({
+    super.key,
+    required this.text,
+  });
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+      ),
+      textAlign: TextAlign.left,
     );
   }
 }

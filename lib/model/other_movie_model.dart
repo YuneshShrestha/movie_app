@@ -1,19 +1,13 @@
-class NowAndUpcomingMovieModel {
-  Dates? dates;
+class OtherMovieModel {
   int? page;
   List<Results>? results;
   int? totalPages;
   int? totalResults;
 
-  NowAndUpcomingMovieModel(
-      {this.dates,
-      this.page,
-      this.results,
-      this.totalPages,
-      this.totalResults});
+  OtherMovieModel(
+      {this.page, this.results, this.totalPages, this.totalResults});
 
-  NowAndUpcomingMovieModel.fromJson(Map<String, dynamic> json) {
-    dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null;
+  OtherMovieModel.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     if (json['results'] != null) {
       results = <Results>[];
@@ -26,35 +20,13 @@ class NowAndUpcomingMovieModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (dates != null) {
-      data['dates'] = dates!.toJson();
-    }
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['page'] = page;
     if (results != null) {
       data['results'] = results!.map((v) => v.toJson()).toList();
     }
     data['total_pages'] = totalPages;
     data['total_results'] = totalResults;
-    return data;
-  }
-}
-
-class Dates {
-   String? maximum;
-  String? minimum;
-
-  Dates({this.maximum, this.minimum});
-
-  Dates.fromJson(Map<String, dynamic> json) {
-    maximum = json['maximum'];
-    minimum = json['minimum'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['maximum'] = maximum;
-    data['minimum'] = minimum;
     return data;
   }
 }
@@ -73,7 +45,7 @@ class Results {
   String? title;
   bool? video;
   double? voteAverage;
-  double? voteCount;
+  int? voteCount;
 
   Results(
       {this.adult,
@@ -99,17 +71,17 @@ class Results {
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
-    popularity = json['popularity'];
+    popularity = double.parse(json['popularity'].toString());
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
     title = json['title'];
     video = json['video'];
     voteAverage = double.parse(json['vote_average'].toString());
-    voteCount = double.parse(json['vote_count'].toString());
+    voteCount = int.parse(json['vote_count'].toString());
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['adult'] = adult;
     data['backdrop_path'] = backdropPath;
     data['genre_ids'] = genreIds;

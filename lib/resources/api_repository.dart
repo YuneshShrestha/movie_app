@@ -1,4 +1,7 @@
-import 'package:movie_recommendation_app/model/now_and_upcoming_movie.dart';
+import 'package:movie_recommendation_app/model/genre_model.dart';
+import 'package:movie_recommendation_app/model/movie_detail_model.dart';
+import 'package:movie_recommendation_app/model/now_and_upcoming_movie_model.dart';
+import 'package:movie_recommendation_app/model/other_movie_model.dart';
 import 'api_provider.dart';
 
 class ApiRepository {
@@ -8,6 +11,12 @@ class ApiRepository {
       apiProvider.getNowPlayingMovies();
   Future<NowAndUpcomingMovieModel> getUpcomingMovies() =>
       apiProvider.getUpcomingMovies();
+  Future<OtherMovieModel> getPopularMovies() => apiProvider.getPopularMovies();
+  Future<OtherMovieModel> getTopRatedMovies() =>
+      apiProvider.getTopRatedMovies();
+  Future<GenreModel> getGenre() => apiProvider.getGenre();
+  Future<MovieDetailModel> getMovieDetail(String id) => apiProvider.getMovieDetail(id: id);
+  
 }
 
 class NetworkError extends Error {}
